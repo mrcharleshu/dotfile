@@ -96,9 +96,41 @@ source $ZSH/oh-my-zsh.sh
 alias cds="/Users/Charles/Documents/workspace/Scripts"
 alias cdw="/Users/Charles/Documents/workspace"
 alias cdd="/Users/Charles/Downloads"
+alias bs="brew services"
 alias gsync="gco develop;git pull;gco release;git pull;gco master;git pull;"
 alias zshconfig="vim ~/.zshrc"
 alias pip3="python3 -m pip"
+# Lock the screen (when going AFK)
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+# eos commands
+alias myeos='docker exec -it eosio bash'
+alias eosiocpp='/Users/Charles/Documents/workspace/eos/build/tools/eosiocpp'
+# alias cleos='docker exec -it eosio /opt/eosio/bin/cleos -u http://localhost:8888'
+alias cleos="/usr/local/bin/cleos --wallet-url http://127.0.0.1:6666 --url http://127.0.0.1:8000"
+
+function eos_env_switch() {
+    local env=$1
+    case $env in
+    "local")
+        alias cleos="/usr/local/bin/cleos --wallet-url http://127.0.0.1:6666 --url http://127.0.0.1:8000"
+        ;;
+    "test")
+        alias cleos="/usr/local/bin/cleos --wallet-url http://127.0.0.1:6666 --url http://test-chain.ruffcorp.com:8888"
+        ;;
+    "staging")
+        alias cleos="/usr/local/bin/cleos --wallet-url http://127.0.0.1:6666 --url http://staging-chain.ruffcorp.com:8888"
+        ;;
+    "prod")
+        alias cleos="/usr/local/bin/cleos --wallet-url http://127.0.0.1:6666 --url http://chain.ruffcorp.com:8000"
+        ;;
+    esac
+}
 
 # kubectl logs
 function kl() {
@@ -124,4 +156,27 @@ function kdp() {
     local cmd="kubectl get pods -n ${env} | grep ${state} | awk '{print \$1}' | xargs -t -I {} kubectl delete pods --grace-period=0 --force -n ${env} {}"
     printf "\e[1;32mCommand:\e[0m \e[1;46m${cmd}\e[0m\n"
     eval $cmd
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server() {
+	local port="${1:-8000}";
+	sleep 1 && open "http://localhost:${port}/" &
+	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
 }
