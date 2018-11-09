@@ -158,6 +158,15 @@ function kdp() {
     eval $cmd
 }
 
+# kubectl delete svc
+function kds() {
+    local env=$1
+    printf "\e[1;32mEnvrioment:\e[0m \e[1;46m【${env}】\e[0m\n"
+    local arr=($(kubectl get svc -n $env | awk 'NR!=1{print $1}' | tr -s "\n" " "))
+    printf "\e[1;32mServices:\e[0m \e[1;46m${arr}\e[0m\n"
+    for acc in $arr; do kubectl -n $env delete svc $acc; done;
+}
+
 # Determine size of a file or total size of a directory
 function fs() {
 	if du -b /dev/null > /dev/null 2>&1; then
