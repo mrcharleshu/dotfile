@@ -167,6 +167,16 @@ function kds() {
     for acc in $arr; do kubectl -n $env delete svc $acc; done;
 }
 
+# kubectl scale zero
+function ksz() {
+    local env=$1
+    printf "\e[1;32mEnvrioment:\e[0m \e[1;46m【${env}】\e[0m\n"
+    local arr=($(kubectl get deploy -n $env | awk 'NR!=1 && $3!=0 {print $1}' | tr -s "\n" " "))
+    printf "\e[1;32mDeployments:\e[0m \e[1;46m${arr}\e[0m\n"
+    for acc in $arr;do kubectl -n $env scale deploy $acc --replicas=0;done;
+    kubectl get deploy -n $env
+}
+
 # Determine size of a file or total size of a directory
 function fs() {
 	if du -b /dev/null > /dev/null 2>&1; then
