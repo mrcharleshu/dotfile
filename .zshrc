@@ -3,6 +3,7 @@
 export JAVA_HOME=$(/usr/libexec/java_home)
 export ANDROID_HOME=/Users/Charles/Library/Android/sdk
 export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
+export GPG_TTY=$(tty)
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -61,9 +62,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git autojump history sublime
-)
+plugins=(git ruby autojump mvn copydir cp history colored-man-pages sublime colorize rsync zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -93,13 +92,25 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
+alias zshconfig="vim ~/.zshrc"
+alias lls="ls -lhSr"
+alias llt="ls -lst"
+alias lld="ls -lhF | grep "/$""
 alias cds="/Users/Charles/Documents/workspace/Scripts"
 alias cdw="/Users/Charles/Documents/workspace"
 alias cdd="/Users/Charles/Downloads"
 alias bs="brew services"
-alias gsync="gco develop;git pull;gco release;git pull;gco master;git pull;"
-alias zshconfig="vim ~/.zshrc"
+alias pip="python -m pip"
 alias pip3="python3 -m pip"
+alias diff="icdiff"
+alias diffn="icdiff --line-numbers"
+alias free="top -l 1 | head -n 10 | grep PhysMem"
+alias gsync="gco develop;git pull;gco release;git pull;gco master;git pull;"
+# Quote Of The Day
+echo "============================== Quote Of The Day =============================="
+fortune | lolcat
+echo "=============================================================================="
+echo
 # Lock the screen (when going AFK)
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 # IP addresses
