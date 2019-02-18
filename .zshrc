@@ -1,9 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export JAVA_HOME=$(/usr/libexec/java_home)
-export ANDROID_HOME=/Users/Charles/Library/Android/sdk
+# export ANDROID_HOME=/Users/Charles/Library/Android/sdk
 export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
-export GPG_TTY=$(tty)
+# export GPG_TTY=$(tty)
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
